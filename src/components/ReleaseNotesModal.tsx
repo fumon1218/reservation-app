@@ -40,6 +40,22 @@ export const ReleaseNotesModal: React.FC<ReleaseNotesModalProps> = ({ isOpen, on
 
                         <section>
                             <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+                                👤 v1.4.0 (내 정보 수정 기능)
+                            </h3>
+                            <ul className="space-y-2.5 text-slate-600">
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>우측 상단의 본인 <strong>계정 이름(아이콘)</strong>을 클릭하면 내 정보를 편리하게 수정할 수 있습니다.</span>
+                                </li>
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>로그인 시 사용한 비밀번호는 물론이고, 소속기관명 및 연락처 등 가입 당시의 정보를 자유롭게 갱신할 수 있습니다.</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
                                 🔒 v1.3.1 (비밀번호 보안 추가)
                             </h3>
                             <ul className="space-y-2.5 text-slate-600">

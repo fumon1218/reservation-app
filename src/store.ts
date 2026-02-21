@@ -42,6 +42,7 @@ interface AuthState {
     login: (email: string, password?: string) => void;
     logout: () => void;
     register: (email: string, password: string | undefined, name: string, phone: string, orgName: string, zipCode: string, address: string) => void;
+    updateUserProfile: (uid: string, data: Partial<User>) => void;
     approveUser: (uid: string) => void;
     addReservation: (userId: string, userName: string, date: string, time: string) => void;
     addNotice: (title: string, content: string, author: string) => void;
@@ -111,6 +112,19 @@ export const useStore = create<AuthState>((set) => ({
         return {
             users: [...state.users, newUser],
             currentUser: newUser
+        };
+    }),
+
+    updateUserProfile: (uid, data) => set((state) => {
+        const updatedUsers = state.users.map(u =>
+            u.uid === uid ? { ...u, ...data } : u
+        );
+
+        return {
+            users: updatedUsers,
+            currentUser: state.currentUser?.uid === uid
+                ? { ...state.currentUser, ...data }
+                : state.currentUser
         };
     }),
 

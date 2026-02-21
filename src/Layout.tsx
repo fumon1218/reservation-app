@@ -4,10 +4,12 @@ import { LogOut, User as UserIcon, Calendar, Settings, Info, Megaphone } from 'l
 import { useStore } from './store';
 import { AuthModal } from './components/AuthModal';
 import { ReleaseNotesModal } from './components/ReleaseNotesModal';
+import { ProfileEditModal } from './components/ProfileEditModal';
 
 export const Layout = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false);
+    const [isProfileEditOpen, setIsProfileEditOpen] = useState(false);
     const { currentUser, logout } = useStore();
     const location = useLocation();
 
@@ -68,15 +70,19 @@ export const Layout = () => {
                     <div className="flex items-center gap-4 text-sm">
                         {currentUser ? (
                             <div className="flex items-center gap-3 bg-white/50 border border-slate-200 px-3 py-1.5 md:px-4 md:py-2 rounded-xl shadow-sm">
-                                <span className="flex items-center gap-2 text-slate-700">
+                                <button
+                                    onClick={() => setIsProfileEditOpen(true)}
+                                    className="flex items-center gap-2 text-slate-700 hover:text-brand-600 transition-colors"
+                                    title="내 정보 수정"
+                                >
                                     <UserIcon size={16} />
-                                    <span className="font-bold text-slate-800">{currentUser.name}</span>
+                                    <span className="font-bold text-slate-800 hover:text-brand-600 transition-colors">{currentUser.name}</span>
                                     <span className={`text-[10px] md:text-xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${currentUser.status === 'host' ? 'bg-amber-100 text-amber-700' :
                                         currentUser.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'
                                         }`}>
                                         {currentUser.status}
                                     </span>
-                                </span>
+                                </button>
                                 <button
                                     onClick={() => {
                                         logout();
@@ -120,6 +126,7 @@ export const Layout = () => {
             </div>
 
             {isAuthModalOpen && <AuthModal onClose={() => setIsAuthModalOpen(false)} />}
+            {isProfileEditOpen && <ProfileEditModal onClose={() => setIsProfileEditOpen(false)} />}
             <ReleaseNotesModal isOpen={isReleaseNotesOpen} onClose={handleCloseReleaseNotes} />
         </div>
     );
