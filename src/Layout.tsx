@@ -1,13 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LogOut, User as UserIcon, Calendar, Settings } from 'lucide-react';
+import { LogOut, User as UserIcon, Calendar, Settings, Info } from 'lucide-react';
 import { useStore } from './store';
 import { AuthModal } from './components/AuthModal';
+import { ReleaseNotesModal } from './components/ReleaseNotesModal';
 
 export const Layout = () => {
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [isReleaseNotesOpen, setIsReleaseNotesOpen] = useState(false);
     const { currentUser, logout } = useStore();
     const location = useLocation();
+
+    useEffect(() => {
+        // 버전 업데이트 확인 로직
+        const lastSeen = localStorage.getItem('lastSeenVersion');
+        if (lastSeen !== __APP_VERSION__) {
+            setIsReleaseNotesOpen(true);
+        }
+    }, []);
+
+    const handleCloseReleaseNotes = () => {
+        localStorage.setItem('lastSeenVersion', __APP_VERSION__);
+        setIsReleaseNotesOpen(false);
+    };
 
     const isHost = currentUser?.status === 'host';
     const isAdminPage = location.pathname === '/admin';
@@ -84,13 +99,19 @@ export const Layout = () => {
                     <div className="text-center">
                         &copy; {new Date().getFullYear()} 강원특수교육원 강릉분원. All rights reserved.
                     </div>
-                    <div className="absolute right-4 text-xs font-medium text-slate-300 bg-white/50 px-2 py-1 rounded-md border border-slate-100">
-                        v{__APP_VERSION__}
-                    </div>
+                    <button
+                        onClick={() => setIsReleaseNotesOpen(true)}
+                        className="absolute right-4 flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-brand-600 bg-white/50 hover:bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/60 shadow-sm transition-all cursor-pointer group"
+                        title="업데이트 내역 보기"
+                    >
+                        <Info size={14} className="group-hover:text-brand-500 transition-colors" />
+                        <span>v{__APP_VERSION__}</span>
+                    </button>
                 </footer>
             </div>
 
             {isAuthModalOpen && <AuthModal onClose={() => setIsAuthModalOpen(false)} />}
+            <ReleaseNotesModal isOpen={isReleaseNotesOpen} onClose={handleCloseReleaseNotes} />
         </div>
     );
 };
