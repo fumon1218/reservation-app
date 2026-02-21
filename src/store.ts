@@ -6,7 +6,11 @@ export type UserStatus = 'visitor' | 'pending' | 'approved' | 'host';
 export interface User {
     uid: string;
     email: string;
-    name: string;
+    name: string;      // 담당자 이름으로 활용
+    phone?: string;    // 전화번호
+    orgName?: string;  // 소속기관명
+    zipCode?: string;  // 우편번호
+    address?: string;  // 기본 주소
     status: UserStatus;
 }
 
@@ -27,7 +31,7 @@ interface AuthState {
     // Actions
     login: (email: string) => void;
     logout: () => void;
-    register: (email: string, name: string) => void;
+    register: (email: string, name: string, phone: string, orgName: string, zipCode: string, address: string) => void;
     approveUser: (uid: string) => void;
     addReservation: (userId: string, userName: string, date: string, time: string) => void;
 }
@@ -37,9 +41,9 @@ export const useStore = create<AuthState>((set) => ({
 
     // 초기 더미 데이터 세팅 (테스트용 호스트 계정 포함)
     users: [
-        { uid: 'host-123', email: 'host@admin.com', name: '관리자', status: 'host' },
-        { uid: 'user-456', email: 'test@user.com', name: '테스터(승인됨)', status: 'approved' },
-        { uid: 'user-789', email: 'wait@user.com', name: '대기자', status: 'pending' },
+        { uid: 'host-123', email: 'host@admin.com', name: '관리자', phone: '010-0000-0000', orgName: '운영원', zipCode: '00000', address: '내부', status: 'host' },
+        { uid: 'user-456', email: 'test@user.com', name: '테스터(승인됨)', phone: '010-1111-2222', orgName: 'OO학교', zipCode: '12345', address: '테스트시 테스트동', status: 'approved' },
+        { uid: 'user-789', email: 'wait@user.com', name: '대기자', phone: '010-3333-4444', orgName: 'XX교육관', zipCode: '54321', address: '대기시 대기동', status: 'pending' },
     ],
     reservations: [],
 
@@ -54,7 +58,7 @@ export const useStore = create<AuthState>((set) => ({
 
     logout: () => set({ currentUser: null }),
 
-    register: (email, name) => set((state) => {
+    register: (email, name, phone, orgName, zipCode, address) => set((state) => {
         if (state.users.some(u => u.email === email)) {
             alert('이미 존재하는 이메일입니다.');
             return state;
@@ -63,6 +67,10 @@ export const useStore = create<AuthState>((set) => ({
             uid: Math.random().toString(36).substr(2, 9),
             email,
             name,
+            phone,
+            orgName,
+            zipCode,
+            address,
             status: 'pending' // 신규 가입자는 항상 대기 상태
         };
         alert('가입이 완료되었습니다. 호스트의 승인을 기다려주세요.');

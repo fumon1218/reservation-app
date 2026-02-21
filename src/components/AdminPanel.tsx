@@ -34,20 +34,42 @@ export const AdminPanel: React.FC = () => {
                     {pendingUsers.length === 0 ? (
                         <p className="text-sm text-slate-400 italic">현재 승인 대기 중인 이용자가 없습니다.</p>
                     ) : (
-                        <ul className="space-y-2">
+                        <ul className="space-y-3">
                             {pendingUsers.map(user => (
-                                <li key={user.uid} className="flex items-center justify-between p-3 bg-white/60 border border-slate-200 rounded-xl">
-                                    <div>
-                                        <span className="font-semibold text-slate-800 block">{user.name}</span>
-                                        <span className="text-sm text-slate-500">{user.email}</span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
+                                <li key={user.uid} className="flex flex-col gap-3 p-4 bg-white border border-slate-200 shadow-sm rounded-xl">
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <span className="font-bold text-slate-800 text-lg flex items-center gap-2">
+                                                {user.orgName}
+                                                <span className="text-sm font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">{user.name} 담당자</span>
+                                            </span>
+                                        </div>
                                         {getStatusBadge(user.status)}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                        <div className="flex flex-col">
+                                            <span className="text-xs font-bold text-slate-400 mb-0.5">이메일 계정</span>
+                                            <span>{user.email}</span>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="text-xs font-bold text-slate-400 mb-0.5">연락처</span>
+                                            <span>{user.phone || '미입력'}</span>
+                                        </div>
+                                        <div className="flex flex-col sm:col-span-2">
+                                            <span className="text-xs font-bold text-slate-400 mb-0.5">주소</span>
+                                            <span className="truncate" title={user.address ? `[${user.zipCode}] ${user.address}` : '미입력'}>
+                                                {user.address ? `[${user.zipCode}] ${user.address}` : '미입력'}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex justify-end mt-1">
                                         <button
                                             onClick={() => approveUser(user.uid)}
-                                            className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold rounded-lg transition-colors"
+                                            className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-bold rounded-lg transition-colors shadow-sm flex items-center gap-1.5"
                                         >
-                                            승인하기
+                                            <CheckCircle size={16} /> 승인 처리하기
                                         </button>
                                     </div>
                                 </li>

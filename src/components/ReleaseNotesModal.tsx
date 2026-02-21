@@ -40,6 +40,26 @@ export const ReleaseNotesModal: React.FC<ReleaseNotesModalProps> = ({ isOpen, on
 
                         <section>
                             <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+                                🎉 v1.2.0 (회원가입 폼 고도화)
+                            </h3>
+                            <ul className="space-y-2.5 text-slate-600">
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>회원가입 시 <strong>우편번호 검색(Daum)</strong>을 통해 정확한 소속기관 주소를 입력할 수 있게 되었습니다.</span>
+                                </li>
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>가입 양식에 담당자 이름, 연락처, 소속기관명 필수 입력 항목이 추가되었습니다.</span>
+                                </li>
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>관리자 패널에서 가입 대기자의 <strong>상세 정보(조직, 연락처 등)</strong>를 한눈에 확인할 수 있도록 UI가 개선되었습니다.</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
                                 🌟 v1.1.0 (디자인 업데이트)
                             </h3>
                             <ul className="space-y-2.5 text-slate-600">
