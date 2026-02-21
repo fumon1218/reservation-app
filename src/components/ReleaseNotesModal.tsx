@@ -40,6 +40,18 @@ export const ReleaseNotesModal: React.FC<ReleaseNotesModalProps> = ({ isOpen, on
 
                         <section>
                             <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+                                🌟 v1.1.0 (디자인 업데이트)
+                            </h3>
+                            <ul className="space-y-2.5 text-slate-600">
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>메인 예약 페이지 상단에 <strong>강원특수교육원 강릉분원의 조감도 이미지</strong>가 와이드 배경으로 적용되었습니다.</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
                                 🚀 v1.0.0 (Phase 2)
                             </h3>
                             <ul className="space-y-2.5 text-slate-600">
