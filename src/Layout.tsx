@@ -48,7 +48,7 @@ export const Layout = () => {
                                     <UserIcon size={16} />
                                     <span className="font-bold text-slate-800">{currentUser.name}</span>
                                     <span className={`text-[10px] md:text-xs px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${currentUser.status === 'host' ? 'bg-amber-100 text-amber-700' :
-                                            currentUser.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'
+                                        currentUser.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'
                                         }`}>
                                         {currentUser.status}
                                     </span>
@@ -80,8 +80,13 @@ export const Layout = () => {
                     <Outlet context={{ requireLogin: () => setIsAuthModalOpen(true) }} />
                 </div>
 
-                <footer className="text-center text-slate-400 text-sm py-4">
-                    &copy; {new Date().getFullYear()} 강원특수교육원 강릉분원. All rights reserved.
+                <footer className="relative flex items-center justify-center text-slate-400 text-sm py-6 mt-8 border-t border-slate-200/40">
+                    <div className="text-center">
+                        &copy; {new Date().getFullYear()} 강원특수교육원 강릉분원. All rights reserved.
+                    </div>
+                    <div className="absolute right-4 text-xs font-medium text-slate-300 bg-white/50 px-2 py-1 rounded-md border border-slate-100">
+                        v{__APP_VERSION__}
+                    </div>
                 </footer>
             </div>
 
