@@ -40,6 +40,22 @@ export const ReleaseNotesModal: React.FC<ReleaseNotesModalProps> = ({ isOpen, on
 
                         <section>
                             <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+                                🏢 v1.5.0 (다중 시설 예약 & 현황 탭 추가)
+                            </h3>
+                            <ul className="space-y-2.5 text-slate-600">
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>이제 예약 시 <strong>[안전체험관], [대회의실], [소회의실]</strong> 중 하나를 지정하여 예약하실 수 있습니다.</span>
+                                </li>
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>상단 메뉴에 새롭게 <strong>예약 현황 탭</strong>이 추가되었습니다. 이 탭에서는 세 시설의 예약 상태를 한눈에 비교할 수 있습니다.</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
                                 👤 v1.4.0 (내 정보 수정 기능)
                             </h3>
                             <ul className="space-y-2.5 text-slate-600">

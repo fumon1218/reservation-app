@@ -5,6 +5,7 @@ import { useStore } from '../store';
 interface TimeSlotPickerProps {
     selectedDate: Date;
     selectedTime: string | null;
+    selectedFacility: string;
     onSelectTime: (time: string) => void;
     onReserve: () => void;
 }
@@ -12,14 +13,15 @@ interface TimeSlotPickerProps {
 export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
     selectedDate,
     selectedTime,
+    selectedFacility,
     onSelectTime,
     onReserve
 }) => {
     const { currentUser, reservations } = useStore();
     const dateStr = format(selectedDate, 'yyyy-MM-dd');
 
-    // 현재 선택된 날짜의 예약들
-    const todaysReservations = reservations.filter(r => r.date === dateStr);
+    // 현재 선택된 날짜 및 시설의 예약들
+    const facilityReservations = reservations.filter(r => r.date === dateStr && r.facility === selectedFacility);
 
     // 1시간 단위 (09:00 ~ 18:00)
     const timeSlots = [
@@ -37,6 +39,7 @@ export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
                 </div>
                 <div>
                     <h3 className="text-lg font-bold text-slate-800">예약 시간 선택</h3>
+                    <p className="text-sm text-brand-600 font-bold mb-1">{selectedFacility}</p>
                     <p className="text-sm text-slate-500 font-medium tracking-tight">
                         {format(selectedDate, 'yyyy. MM. dd')} • 1시간 단위
                     </p>
@@ -45,7 +48,7 @@ export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                 {timeSlots.map((time) => {
-                    const isReserved = todaysReservations.some(r => r.time === time);
+                    const isReserved = facilityReservations.some(r => r.time === time);
 
                     return (
                         <button
@@ -53,10 +56,10 @@ export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
                             disabled={isReserved}
                             onClick={() => onSelectTime(time)}
                             className={`py-3 px-4 rounded-xl text-center font-semibold transition-all border ${isReserved
-                                    ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed opacity-60' // 이미 예약됨
-                                    : selectedTime === time
-                                        ? 'bg-brand-500 text-white border-brand-600 shadow-lg shadow-brand-500/30 scale-105'
-                                        : 'bg-slate-50 text-slate-600 hover:bg-brand-50 hover:text-brand-700 hover:border-brand-200 border-slate-200/80 hover:-translate-y-0.5'
+                                ? 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed opacity-60' // 이미 예약됨
+                                : selectedTime === time
+                                    ? 'bg-brand-500 text-white border-brand-600 shadow-lg shadow-brand-500/30 scale-105'
+                                    : 'bg-slate-50 text-slate-600 hover:bg-brand-50 hover:text-brand-700 hover:border-brand-200 border-slate-200/80 hover:-translate-y-0.5'
                                 }`}
                         >
                             {time}
@@ -71,7 +74,7 @@ export const TimeSlotPicker: React.FC<TimeSlotPickerProps> = ({
                     <div>
                         <span className="block text-sm font-semibold opacity-80 mb-0.5">선택된 예약</span>
                         <span className="font-bold text-lg tracking-tight">
-                            {format(selectedDate, 'M월 d일')} {selectedTime}
+                            {format(selectedDate, 'M월 d일')} {selectedTime} <span className="text-emerald-600 ml-1">({selectedFacility})</span>
                         </span>
                     </div>
                     {canReserve ? (

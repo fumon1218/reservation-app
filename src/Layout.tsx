@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LogOut, User as UserIcon, Calendar, Settings, Info, Megaphone } from 'lucide-react';
+import { LogOut, User as UserIcon, Calendar, Settings, Info, Megaphone, ActivitySquare } from 'lucide-react';
 import { useStore } from './store';
 import { AuthModal } from './components/AuthModal';
 import { ReleaseNotesModal } from './components/ReleaseNotesModal';
@@ -43,6 +43,15 @@ export const Layout = () => {
                         >
                             <Calendar size={18} />
                             <span className="hidden sm:inline">예약 캘린더</span>
+                        </Link>
+
+                        <Link
+                            to="/status"
+                            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all font-bold ${location.pathname === '/status' ? 'bg-brand-50 text-brand-700' : 'text-slate-500 hover:bg-slate-50'
+                                }`}
+                        >
+                            <ActivitySquare size={18} />
+                            <span className="hidden sm:inline">예약 현황</span>
                         </Link>
 
                         <Link

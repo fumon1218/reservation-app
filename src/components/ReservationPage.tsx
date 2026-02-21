@@ -10,6 +10,7 @@ export const ReservationPage = () => {
     const [viewMode, setViewMode] = useState<'year' | 'month' | 'week' | 'day'>('month');
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
+    const [selectedFacility, setSelectedFacility] = useState<string>('안전체험관');
 
     const { currentUser, addReservation } = useStore();
     const { requireLogin } = useOutletContext<{ requireLogin: () => void }>();
@@ -34,9 +35,15 @@ export const ReservationPage = () => {
         addReservation(
             currentUser.uid,
             currentUser.name,
+            selectedFacility,
             format(selectedDate, 'yyyy-MM-dd'),
             selectedTime
         );
+        setSelectedTime(null);
+    };
+
+    const handleFacilitySelect = (facility: string) => {
+        setSelectedFacility(facility);
         setSelectedTime(null);
     };
 
@@ -73,23 +80,43 @@ export const ReservationPage = () => {
             {/* Main Content Area */}
             <main className="glass-card p-6 md:p-8 min-h-[500px] flex flex-col animate-in delay-75">
 
-                {/* View Mode Tabs */}
-                <div className="flex bg-slate-100/50 p-1 rounded-xl mx-auto mb-8 w-full max-w-md border border-slate-200/50">
-                    {(['year', 'month', 'week', 'day'] as const).map((mode) => (
-                        <button
-                            key={mode}
-                            onClick={() => setViewMode(mode)}
-                            className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${viewMode === mode
-                                ? 'bg-white text-brand-600 shadow-sm ring-1 ring-slate-900/5 focus:outline-none focus:ring-2 focus:ring-brand-500/50'
-                                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/50 focus:outline-none'
-                                }`}
-                        >
-                            {mode === 'year' && '연간'}
-                            {mode === 'month' && '월간'}
-                            {mode === 'week' && '주간'}
-                            {mode === 'day' && '일간'}
-                        </button>
-                    ))}
+                {/* Facility & View Mode Tabs Container */}
+                <div className="flex flex-col md:flex-row gap-4 mb-8 justify-between w-full max-w-4xl mx-auto">
+
+                    {/* Facility Tabs */}
+                    <div className="flex bg-brand-50/50 p-1 rounded-xl w-full md:w-auto border border-brand-100/50">
+                        {['안전체험관', '대회의실', '소회의실'].map((facility) => (
+                            <button
+                                key={facility}
+                                onClick={() => handleFacilitySelect(facility)}
+                                className={`flex-1 md:flex-none py-2.5 px-3 md:px-5 rounded-lg text-sm font-bold transition-all ${selectedFacility === facility
+                                    ? 'bg-brand-600 text-white shadow-md shadow-brand-500/20 ring-1 ring-brand-700/10'
+                                    : 'text-brand-700/70 hover:text-brand-800 hover:bg-brand-100/50'
+                                    }`}
+                            >
+                                {facility}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* View Mode Tabs */}
+                    <div className="flex bg-slate-100/50 p-1 rounded-xl w-full md:w-auto border border-slate-200/50">
+                        {(['year', 'month', 'week', 'day'] as const).map((mode) => (
+                            <button
+                                key={mode}
+                                onClick={() => setViewMode(mode)}
+                                className={`flex-1 md:flex-none py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${viewMode === mode
+                                    ? 'bg-white text-brand-600 shadow-sm ring-1 ring-slate-900/5 focus:outline-none focus:ring-2 focus:ring-brand-500/50'
+                                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/50 focus:outline-none'
+                                    }`}
+                            >
+                                {mode === 'year' && '연간'}
+                                {mode === 'month' && '월간'}
+                                {mode === 'week' && '주간'}
+                                {mode === 'day' && '일간'}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Calendar Area */}
@@ -104,6 +131,7 @@ export const ReservationPage = () => {
                         <TimeSlotPicker
                             selectedDate={selectedDate}
                             selectedTime={selectedTime}
+                            selectedFacility={selectedFacility}
                             onSelectTime={setSelectedTime}
                             onReserve={handleReserve}
                         />

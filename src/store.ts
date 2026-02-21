@@ -19,6 +19,7 @@ export interface Reservation {
     id: string;
     userId: string;
     userName: string;
+    facility: string; // (추가) 예약 시설명 (안전체험관, 대회의실, 소회의실)
     date: string; // ISO 8601 string or yyyy-MM-dd
     time: string;
     status: 'confirmed' | 'cancelled';
@@ -44,7 +45,7 @@ interface AuthState {
     register: (email: string, password: string | undefined, name: string, phone: string, orgName: string, zipCode: string, address: string) => void;
     updateUserProfile: (uid: string, data: Partial<User>) => void;
     approveUser: (uid: string) => void;
-    addReservation: (userId: string, userName: string, date: string, time: string) => void;
+    addReservation: (userId: string, userName: string, facility: string, date: string, time: string) => void;
     addNotice: (title: string, content: string, author: string) => void;
     deleteNotice: (id: string) => void;
 }
@@ -58,7 +59,10 @@ export const useStore = create<AuthState>((set) => ({
         { uid: 'user-456', email: 'test@user.com', password: 'password', name: '테스터(승인됨)', phone: '010-1111-2222', orgName: 'OO학교', zipCode: '12345', address: '테스트시 테스트동', status: 'approved' },
         { uid: 'user-789', email: 'wait@user.com', password: 'password', name: '대기자', phone: '010-3333-4444', orgName: 'XX교육관', zipCode: '54321', address: '대기시 대기동', status: 'pending' },
     ],
-    reservations: [],
+    reservations: [
+        { id: 'res-1', userId: 'user-456', userName: '테스터(승인됨)', facility: '안전체험관', date: new Date().toISOString().split('T')[0], time: '10:00', status: 'confirmed' },
+        { id: 'res-2', userId: 'user-456', userName: '테스터(승인됨)', facility: '대회의실', date: new Date().toISOString().split('T')[0], time: '14:00', status: 'confirmed' }
+    ],
     notices: [
         {
             id: 'notice-1',
@@ -138,10 +142,10 @@ export const useStore = create<AuthState>((set) => ({
             : state.currentUser
     })),
 
-    addReservation: (userId, userName, date, time) => set((state) => {
-        const isConflict = state.reservations.some(r => r.date === date && r.time === time);
+    addReservation: (userId, userName, facility, date, time) => set((state) => {
+        const isConflict = state.reservations.some(r => r.facility === facility && r.date === date && r.time === time);
         if (isConflict) {
-            alert('이미 예약된 시간입니다.');
+            alert('해당 시설은 이미 예약된 시간입니다.');
             return state;
         }
 
@@ -149,6 +153,7 @@ export const useStore = create<AuthState>((set) => ({
             id: Math.random().toString(36).substr(2, 9),
             userId,
             userName,
+            facility,
             date,
             time,
             status: 'confirmed'
