@@ -42,18 +42,32 @@ export const ReservationPage = () => {
 
     return (
         <>
-            {/* Header Section */}
-            <header className="glass-card p-6 md:p-10 text-center flex flex-col items-center gap-4 animate-in">
-                <div className="inline-flex items-center justify-center p-3 bg-brand-50 rounded-2xl text-brand-600 mb-2">
-                    <CalendarDays size={32} strokeWidth={1.5} />
+            {/* Header Section with Image Background */}
+            <header className="relative overflow-hidden rounded-3xl shadow-sm text-center flex flex-col items-center gap-4 animate-in p-8 md:p-14 min-h-[280px] justify-center text-white border border-slate-200/50">
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/reservation-app/images/hero-bg.png"
+                        alt="강원특수교육원 강릉분원 조감도"
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Dark Overlay for Text Readability */}
+                    <div className="absolute inset-0 bg-slate-900/60 mix-blend-multiply" />
+                    {/* Subtle gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-black/20" />
                 </div>
-                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 tracking-tight">
-                    강원특수교육원 강릉분원 예약 앱
-                </h1>
-                <p className="text-slate-500 flex items-center gap-2">
-                    <MapPin size={16} />
-                    원하시는 날짜와 시간을 선택하여 시설을 예약해 보세요.
-                </p>
+
+                <div className="relative z-10 flex flex-col items-center">
+                    <div className="inline-flex items-center justify-center p-3 sm:p-4 bg-white/20 backdrop-blur-md rounded-2xl text-white mb-4 shadow-lg border border-white/20">
+                        <CalendarDays size={40} strokeWidth={1.5} />
+                    </div>
+                    <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight drop-shadow-md lg:leading-tight">
+                        강원특수교육원 강릉분원 예약 앱
+                    </h1>
+                    <p className="flex items-center gap-2 mt-4 text-slate-200 text-sm md:text-base font-medium drop-shadow glass-card !border-white/10 !bg-black/30 px-5 py-2">
+                        <MapPin size={16} />
+                        원하시는 날짜와 시간을 선택하여 시설을 예약해 보세요.
+                    </p>
+                </div>
             </header>
 
             {/* Main Content Area */}
@@ -66,8 +80,8 @@ export const ReservationPage = () => {
                             key={mode}
                             onClick={() => setViewMode(mode)}
                             className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${viewMode === mode
-                                    ? 'bg-white text-brand-600 shadow-sm ring-1 ring-slate-900/5 focus:outline-none focus:ring-2 focus:ring-brand-500/50'
-                                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/50 focus:outline-none'
+                                ? 'bg-white text-brand-600 shadow-sm ring-1 ring-slate-900/5 focus:outline-none focus:ring-2 focus:ring-brand-500/50'
+                                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50/50 focus:outline-none'
                                 }`}
                         >
                             {mode === 'year' && '연간'}
