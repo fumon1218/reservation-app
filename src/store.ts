@@ -6,6 +6,7 @@ export type UserStatus = 'visitor' | 'pending' | 'approved' | 'host';
 export interface User {
     uid: string;
     email: string;
+    password?: string; // (추가) 해시 없는 평문 연습용
     name: string;      // 담당자 이름으로 활용
     phone?: string;    // 전화번호
     orgName?: string;  // 소속기관명
@@ -38,9 +39,9 @@ interface AuthState {
     notices: Notice[]; // Mock database of notices
 
     // Actions
-    login: (email: string) => void;
+    login: (email: string, password?: string) => void;
     logout: () => void;
-    register: (email: string, name: string, phone: string, orgName: string, zipCode: string, address: string) => void;
+    register: (email: string, password: string | undefined, name: string, phone: string, orgName: string, zipCode: string, address: string) => void;
     approveUser: (uid: string) => void;
     addReservation: (userId: string, userName: string, date: string, time: string) => void;
     addNotice: (title: string, content: string, author: string) => void;
@@ -50,11 +51,11 @@ interface AuthState {
 export const useStore = create<AuthState>((set) => ({
     currentUser: null,
 
-    // 초기 더미 데이터 세팅 (테스트용 호스트 계정 포함)
+    // 초기 더미 데이터 세팅 (테스트용 계정 포함)
     users: [
-        { uid: 'host-123', email: 'host@admin.com', name: '관리자', phone: '010-0000-0000', orgName: '운영원', zipCode: '00000', address: '내부', status: 'host' },
-        { uid: 'user-456', email: 'test@user.com', name: '테스터(승인됨)', phone: '010-1111-2222', orgName: 'OO학교', zipCode: '12345', address: '테스트시 테스트동', status: 'approved' },
-        { uid: 'user-789', email: 'wait@user.com', name: '대기자', phone: '010-3333-4444', orgName: 'XX교육관', zipCode: '54321', address: '대기시 대기동', status: 'pending' },
+        { uid: 'host-123', email: 'host@admin.com', password: import.meta.env.VITE_ADMIN_PASSWORD || 'admin1234', name: '관리자', phone: '010-0000-0000', orgName: '운영원', zipCode: '00000', address: '내부', status: 'host' },
+        { uid: 'user-456', email: 'test@user.com', password: 'password', name: '테스터(승인됨)', phone: '010-1111-2222', orgName: 'OO학교', zipCode: '12345', address: '테스트시 테스트동', status: 'approved' },
+        { uid: 'user-789', email: 'wait@user.com', password: 'password', name: '대기자', phone: '010-3333-4444', orgName: 'XX교육관', zipCode: '54321', address: '대기시 대기동', status: 'pending' },
     ],
     reservations: [],
     notices: [
@@ -74,9 +75,14 @@ export const useStore = create<AuthState>((set) => ({
         }
     ],
 
-    login: (email) => set((state) => {
+    login: (email, password) => set((state) => {
         const user = state.users.find(u => u.email === email);
         if (user) {
+            // 비밀번호가 세팅되어 있는데 입력값과 다르면 거부
+            if (user.password && user.password !== password) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return state;
+            }
             return { currentUser: user };
         }
         alert('존재하지 않는 이메일입니다.');
@@ -85,7 +91,7 @@ export const useStore = create<AuthState>((set) => ({
 
     logout: () => set({ currentUser: null }),
 
-    register: (email, name, phone, orgName, zipCode, address) => set((state) => {
+    register: (email, password, name, phone, orgName, zipCode, address) => set((state) => {
         if (state.users.some(u => u.email === email)) {
             alert('이미 존재하는 이메일입니다.');
             return state;
@@ -93,6 +99,7 @@ export const useStore = create<AuthState>((set) => ({
         const newUser: User = {
             uid: Math.random().toString(36).substr(2, 9),
             email,
+            password,
             name,
             phone,
             orgName,

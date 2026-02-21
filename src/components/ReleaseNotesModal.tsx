@@ -40,6 +40,22 @@ export const ReleaseNotesModal: React.FC<ReleaseNotesModalProps> = ({ isOpen, on
 
                         <section>
                             <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
+                                🔒 v1.3.1 (비밀번호 보안 추가)
+                            </h3>
+                            <ul className="space-y-2.5 text-slate-600">
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>회원가입 및 로그인에 <strong>비밀번호(Password)</strong> 체계가 전면 도입되어 보안이 강화되었습니다.</span>
+                                </li>
+                                <li className="flex gap-2">
+                                    <CheckCircle2 size={16} className="text-emerald-500 shrink-0 mt-0.5" />
+                                    <span>관리자 계정(`host@admin.com`)은 이제 커스텀 설정된 비밀번호를 통해 보호됩니다.</span>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section>
+                            <h3 className="font-bold text-slate-800 text-base mb-3 flex items-center gap-2">
                                 🎉 v1.2.0 (회원가입 폼 고도화)
                             </h3>
                             <ul className="space-y-2.5 text-slate-600">

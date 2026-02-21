@@ -10,6 +10,7 @@ interface AuthModalProps {
 export const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const [isLoginMode, setIsLoginMode] = useState(true);
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [orgName, setOrgName] = useState('');
@@ -37,13 +38,17 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (isLoginMode) {
-            login(email);
+            if (!email.trim() || !password.trim()) {
+                alert('이메일과 비밀번호를 입력해주세요.');
+                return;
+            }
+            login(email, password);
         } else {
-            if (!name.trim() || !phone.trim() || !orgName.trim() || !zipCode.trim() || !address.trim()) {
+            if (!email.trim() || !password.trim() || !name.trim() || !phone.trim() || !orgName.trim() || !zipCode.trim() || !address.trim()) {
                 alert('모든 가입 정보를 입력해주세요.');
                 return;
             }
-            register(email, name, phone, orgName, zipCode, address);
+            register(email, password, name, phone, orgName, zipCode, address);
         }
         onClose();
     };
@@ -71,6 +76,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
                                 className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white/70"
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <label className="text-sm font-bold text-slate-700">비밀번호</label>
+                            <input
+                                type="password"
+                                required
+                                placeholder="비밀번호를 입력하세요"
+                                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white/70"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
                             />
                         </div>
 
