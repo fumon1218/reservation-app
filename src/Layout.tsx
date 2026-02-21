@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LogOut, User as UserIcon, Calendar, Settings, Info } from 'lucide-react';
+import { LogOut, User as UserIcon, Calendar, Settings, Info, Megaphone } from 'lucide-react';
 import { useStore } from './store';
 import { AuthModal } from './components/AuthModal';
 import { ReleaseNotesModal } from './components/ReleaseNotesModal';
@@ -36,11 +36,20 @@ export const Layout = () => {
                     <div className="flex items-center gap-1 md:gap-4">
                         <Link
                             to="/"
-                            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all font-bold ${!isAdminPage ? 'bg-brand-50 text-brand-700' : 'text-slate-500 hover:bg-slate-50'
+                            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all font-bold ${location.pathname === '/' ? 'bg-brand-50 text-brand-700' : 'text-slate-500 hover:bg-slate-50'
                                 }`}
                         >
                             <Calendar size={18} />
                             <span className="hidden sm:inline">예약 캘린더</span>
+                        </Link>
+
+                        <Link
+                            to="/notice"
+                            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all font-bold ${location.pathname === '/notice' ? 'bg-brand-50 text-brand-700' : 'text-slate-500 hover:bg-slate-50'
+                                }`}
+                        >
+                            <Megaphone size={18} />
+                            <span className="hidden sm:inline">공지사항</span>
                         </Link>
 
                         {isHost && (

@@ -23,10 +23,19 @@ export interface Reservation {
     status: 'confirmed' | 'cancelled';
 }
 
+export interface Notice {
+    id: string;
+    title: string;
+    content: string;
+    date: string;
+    author: string;
+}
+
 interface AuthState {
     currentUser: User | null;
     users: User[]; // Mock database of users
     reservations: Reservation[]; // Mock database of reservations
+    notices: Notice[]; // Mock database of notices
 
     // Actions
     login: (email: string) => void;
@@ -34,6 +43,8 @@ interface AuthState {
     register: (email: string, name: string, phone: string, orgName: string, zipCode: string, address: string) => void;
     approveUser: (uid: string) => void;
     addReservation: (userId: string, userName: string, date: string, time: string) => void;
+    addNotice: (title: string, content: string, author: string) => void;
+    deleteNotice: (id: string) => void;
 }
 
 export const useStore = create<AuthState>((set) => ({
@@ -46,6 +57,22 @@ export const useStore = create<AuthState>((set) => ({
         { uid: 'user-789', email: 'wait@user.com', name: '대기자', phone: '010-3333-4444', orgName: 'XX교육관', zipCode: '54321', address: '대기시 대기동', status: 'pending' },
     ],
     reservations: [],
+    notices: [
+        {
+            id: 'notice-1',
+            title: '강원특수교육원 강릉분원 예약 앱 오픈 안내',
+            content: '환영합니다! 강릉분원 시설 예약을 위한 전용 애플리케이션이 정식 오픈되었습니다.\n이용 전 반드시 회원가입 후 호스트의 승인을 받아주시기 바랍니다.',
+            date: new Date().toISOString().split('T')[0],
+            author: '관리자'
+        },
+        {
+            id: 'notice-2',
+            title: '시설 이용 수칙 및 주의사항',
+            content: '1. 기관 기자재 파손 시 전액 배상 책임이 있습니다.\n2. 사용 후에는 다음 신청자를 위해 반드시 뒷정리를 해주세요.\n3. 예약 취소는 최소 2일 전까지 앱을 통해 진행해 주시기 바랍니다.',
+            date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+            author: '관리자'
+        }
+    ],
 
     login: (email) => set((state) => {
         const user = state.users.find(u => u.email === email);
@@ -108,5 +135,20 @@ export const useStore = create<AuthState>((set) => ({
 
         alert('예약이 성공적으로 완료되었습니다!');
         return { reservations: [...state.reservations, newRes] };
-    })
+    }),
+
+    addNotice: (title, content, author) => set((state) => {
+        const newNotice: Notice = {
+            id: Math.random().toString(36).substr(2, 9),
+            title,
+            content,
+            date: new Date().toISOString().split('T')[0],
+            author
+        };
+        return { notices: [newNotice, ...state.notices] };
+    }),
+
+    deleteNotice: (id) => set((state) => ({
+        notices: state.notices.filter(n => n.id !== id)
+    }))
 }));
